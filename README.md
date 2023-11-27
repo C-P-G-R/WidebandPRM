@@ -12,9 +12,7 @@ Installation
      conda install numpy
    
      conda install pandas
-   
-     conda install spyder
-   
+     
      conda install scipy
    
      conda install matplotlib
