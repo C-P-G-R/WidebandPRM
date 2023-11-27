@@ -82,6 +82,8 @@ class MzMLParser:
                     spectrum.rt = float(value)
                 elif accession == "MS:1000512":
                     spectrum.filter_string = value
+                    if spectrum.filter_string.find("ms2") == -1:                        
+                        continue
                     spectrum.filter_mz = self.parse_filter_string(spectrum.filter_string)                    
                 elif accession == "MS:1000927":
                     spectrum.injection_time = value
@@ -104,11 +106,13 @@ class MzMLParser:
                 if name == "scan description":
                     spectrum.scan_description = value
                     spectrum.scan_description_cs = self.extract_scan_description_cs(spectrum.scan_description)
-                    if spectrum.scan_description.find("_") != -1:
+                    if spectrum.scan_description.find("WB") != -1:
                         spectrum.spectrum_type = 2
                     elif spectrum.ms_level == 2:
                         spectrum.spectrum_type = 1
                     elif spectrum.ms_level == 1:
+                        spectrum.spectrum_type = 0
+                    else:
                         spectrum.spectrum_type = 0
                 elif name == "[Thermo Trailer Extra]Monoisotopic M/Z:":
                     spectrum.trailer_mz = value
@@ -237,19 +241,22 @@ class WidebandPRM:
 
         for spectrum in self.spectrum_list:
             
-            if spectrum.spectrum_type == 2:  # Quant-Mode spectrum
-                target = self.get_target(spectrum)
-                if target is None:
-                    continue
-                
-                sum_intensity = self.get_sum_of_transition(spectrum, target, spectrum.mz_list, spectrum.intensity_list)
-
-                rt_intensity = [spectrum.rt, sum_intensity[0], spectrum.scan_num]
-                target.all_transition_profile.append(rt_intensity)
-                
-                rt_intensity_endo = [spectrum.rt, sum_intensity[1], spectrum.scan_num]
-                target.all_transition_profile_endo.append(rt_intensity_endo)
-
+            try:
+                if spectrum.spectrum_type == 2:  # Quant-Mode spectrum
+                    target = self.get_target(spectrum)
+                    if target is None:
+                        continue
+                    
+                    sum_intensity = self.get_sum_of_transition(spectrum, target, spectrum.mz_list, spectrum.intensity_list)
+    
+                    rt_intensity = [spectrum.rt, sum_intensity[0], spectrum.scan_num]
+                    target.all_transition_profile.append(rt_intensity)
+                    
+                    rt_intensity_endo = [spectrum.rt, sum_intensity[1], spectrum.scan_num]
+                    target.all_transition_profile_endo.append(rt_intensity_endo)
+            except AttributeError as ae:    
+                continue
+            
         output = self.write_result()        
         print("mzML loaded!")
         return output
