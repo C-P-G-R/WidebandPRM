@@ -36,7 +36,7 @@ Notes
 
 The input file uses mzML.
 - Use the --32 option to generate mzML
-- You should have the following files in the same location as your mzML: target1.csv, target1_trigger.csv, target2.csv, target2_trigger.csv
+- You should have the following files in the same location as your mzML- 
 - target1.csv, target1_trigger.csv (for +2)
 - target2.csv, target2_trigger.csv (for +3)
 
