@@ -8,7 +8,6 @@ Installation
 2. conda create -n WidebandPRM python=3.7.9
 3. conda activate WidebandPRM
 4. install packages
-5. 
      conda install numpy
    
      conda install pandas
@@ -28,7 +27,7 @@ Installation
      pip install image
    
    
-7. run
+5. run
  
    python WidebandPRM.py
 
