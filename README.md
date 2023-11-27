@@ -4,7 +4,7 @@ Program to find the area after fitting for data analyzed by WidebandPRM
 
 Installation
 
-1. download anaconda
+1. download anaconda (https://www.anaconda.com/distribution)
 2. conda create -n WidebandPRM python=3.7.9
 3. conda activate WidebandPRM
 4. install packages
